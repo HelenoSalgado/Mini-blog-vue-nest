@@ -5,9 +5,9 @@
 <template>
     <div>
      <nav class="navigator">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/blog">Blog</RouterLink>
+        <RouterLink class="link-animation" to="/">Home</RouterLink>
+        <RouterLink class="link-animation" to="/about">About</RouterLink>
+        <RouterLink class="link-animation" to="/blog">Blog</RouterLink>
       </nav>
     </div>
 </template>

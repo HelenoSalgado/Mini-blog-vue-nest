@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import HeaderCompont from './components/Header.vue';
+import HeaderCompont from '@/components/Header.vue';
+import FooterCompont from '@/components/Footer.vue'
 </script>
 
 <template>
   
     <HeaderCompont/>
+    <div>
+      <eye fill="black"></eye>
+    </div>
 
     <Suspense>
       <RouterView v-slot="{ Component }">
@@ -16,7 +20,7 @@ import HeaderCompont from './components/Header.vue';
       </template>
     </RouterView>
     </Suspense>
-
+    <FooterCompont/>
 </template>
 
 

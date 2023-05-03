@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue';
+import HomeView from '@/modules/home/HomeView.vue';
+import PostView from '@/modules/blog/post/PostView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,32 +13,37 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => import('@/views/AboutView.vue'),
+      component: () => import('@/modules/about/AboutView.vue'),
     },
     {
       path: '/register',
       name: 'register',
-      component: () => import('@/views/RegisterView.vue'),
+      component: () => import('@/modules/register/RegisterView.vue'),
     },
     {
       path: '/sucess',
       name: 'sucess',
-      component: () => import('@/views/Sucess.vue'),
+      component: () => import('@/views/SucessView.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/LoginView.vue'),
+      component: () => import('@/modules/login/LoginView.vue'),
     },
     {
       path: '/blog',
       name: 'blog',
-      component: () => import('@/views/BlogView.vue'),
+      component: () => import('@/modules/blog/BlogView.vue'),
     },
     {
-      path: '/article/:id',
-      name: 'article',
-      component: () => import('@/views/ArticleView.vue'),
+      path: '/posts/:id',
+      name: 'posts',
+      component: PostView,
+    },
+    {
+      path: '/edite/:id',
+      name: 'edite',
+      component: () => import('@/modules/blog/post/EditePostView.vue'),
     }
   ]
 })

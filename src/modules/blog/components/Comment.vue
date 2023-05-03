@@ -6,10 +6,10 @@
             <p></p>
         </div>
         <div class="content-comment">
-           comments
+           
         </div>
         <span class="likes">
-           likes
+           
         </span>
     </div>
 </template>

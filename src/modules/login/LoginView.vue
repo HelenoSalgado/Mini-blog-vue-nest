@@ -6,7 +6,6 @@ const email = ref('');
 const password = ref('');
 
 async function login(){
-
    router.push('/sucess')
 }
 
@@ -21,6 +20,7 @@ async function login(){
         </div>
 
         <div>
+        <div class="container-form">
         <form class="form-login" action="" @submit.prevent="login">
             <label>
                 <p>Email:</p> 
@@ -34,11 +34,12 @@ async function login(){
             Entrar
          </button>
         </form>
+        </div>
                     
     </div>
     </div>
 </template>
 
 <style scoped>
-@import '../assets/css/register-login.css';
+@import '../../assets/css/register-login.css';
 </style>

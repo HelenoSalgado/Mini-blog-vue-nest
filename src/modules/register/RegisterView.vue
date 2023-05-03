@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 const name = ref('');
 const email = ref('');
@@ -8,7 +8,6 @@ const subdomain = ref('');
 const password = ref('');
 
 async function register(){
-
    router.push('/sucess')
 }
 
@@ -23,6 +22,7 @@ async function register(){
         </div>
 
         <div>
+        <div class="container-form">
         <form class="form-register" action="" @submit.prevent="register">
             <label>
                 <p>Nome Completo:</p> 
@@ -44,11 +44,12 @@ async function register(){
             Começar
          </button>
         </form>
+        </div>
                     
     </div>
     </div>
 </template>
 
 <style scoped>
-@import '../assets/css/register-login.css';
+@import '../../assets/css/register-login.css';
 </style>
