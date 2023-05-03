@@ -82,6 +82,7 @@ console.log(author)
     border-radius: 7px;
     padding: 0 .3rem;
     margin: .5rem 0;
+    line-height: 0;
     cursor: pointer;
   }
   .likes-article i{

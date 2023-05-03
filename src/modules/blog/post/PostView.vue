@@ -49,12 +49,11 @@ console.log(newComment);
           <i class="pi pi-spin pi-spinner spinner-global"></i>
         </template>
         </Suspense>
-        
-        <div class="comment-space">
-          <p>Commentários (1)</p>
-        </div>
         <div>
-           <Comment class="message" />
+           <Comment 
+           class="message" 
+           :author="post.author"
+           />
         </div>
         <addComment 
          :newComment="newComment"

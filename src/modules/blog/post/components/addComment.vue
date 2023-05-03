@@ -1,46 +1,68 @@
 <script setup lang="ts">
-let {newComment} = defineProps(['newComment']);
+
+import { marked } from 'marked';
+import { computed, ref } from 'vue';
+let input = ref('* Você pode escrever em markdown.');
+
+
+let compiledMarkdown = computed(() => {
+  return marked(input.value);
+})
+
+function update(e){
+   input.value = e.target.value;
+}
+      
+
 
 </script>
 <template>
-    <div class="form">
+  <div class="form-container">
     <form>
-      <div class="form__group">
-        <label>Leave a comment</label>
-        <textarea
-          :value="newComment"
-          rows="10"
-          required
-          cols="50"
-        ></textarea>
-        <button>Submit</button>
+      <label>Deixe seu comentário</label>
+      <div class="editor-comment">
+      <textarea :value="input" @input="update"></textarea>
+      <div v-html="compiledMarkdown"></div>
       </div>
+      <button>Submeter</button>
     </form>
   </div>
 </template>
 <style scoped>
-.form {
-  margin-top: 1.5em;
+.form-container form{
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
 }
-
+.form-container form > h1{
+  font-size: 1rem;
+}
 label {
-  display: block;
-  margin-bottom: 1em;
   font-weight: 700;
-  font-family: Padauk, sans-serif;
+  font-family: 'Yeseva One', cursive;
 }
 
-textarea {
+.editor-comment textarea{
   width: 100%;
+  max-width: 600px;
+  min-height: 100px;
+  max-height: 200px;
   margin-top: 0.5em;
 }
 
 button {
+  max-width: 150px;
   border: unset;
-  background: #79b791;
+  background-color: var(--bkg-button);
   color: #230c0f;
   font-weight: 700;
   padding: 1em 2.5em;
   margin-top: 1em;
+  border-radius: 5px;
+  transition: all 200ms;
+  cursor: pointer;
+}
+button:hover{
+  filter: brightness(110%);
 }
 </style>
