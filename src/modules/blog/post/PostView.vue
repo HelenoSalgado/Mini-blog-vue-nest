@@ -1,16 +1,20 @@
 <script setup lang="ts"> 
 import PostCompnt from './components/Post.vue';
 import addComment from './components/addComment.vue';
-import Comment from './components/Comment.vue';
 import { useRoute } from 'vue-router';
 import { marked } from 'marked';
-import { computed, reactive, ref } from 'vue';
+import { defineAsyncComponent, reactive, ref } from 'vue';
 import Post from './api/Post';
 
+const Comment = defineAsyncComponent(() =>
+  import('./components/Comment.vue')
+)
+
 const route = useRoute();
-const postOne = new Post();
-const p = await postOne.get(route.params.id);
-console.log(p);
+const postId = ref(route.params.id)
+
+const p = await Post.get(postId.value);
+
 const post = reactive({
   author: '',
   title: '',
@@ -18,6 +22,7 @@ const post = reactive({
   content: '',
   views: 0,
   likes: 0,
+  comments: '',
 });
 
 post.author = p.author;
@@ -25,11 +30,10 @@ post.title = p.title;
 post.updatedAt = p.updatedAt.split('T')[0];
 post.views = p.views;
 post.likes = p.likes;
+post.comments = p.comments;
 post.content = marked(p.content);
 
 let newComment = ref('Olá');
-
-console.log(newComment);
 
 </script>
  
@@ -44,20 +48,27 @@ console.log(newComment);
           :content="post.content"
           :views="post.views"
           :likes="post.likes"
+          :comments="post.comments.length"
         />
         <template #fallback>
           <i class="pi pi-spin pi-spinner spinner-global"></i>
         </template>
         </Suspense>
         <div>
-           <Comment 
+           <!-- <Comment 
            class="message" 
-           :author="post.author"
-           />
+           :idPost="postId"
+           /> -->
         </div>
         <addComment 
          :newComment="newComment"
         />
+        <div v-if="post.comments.length > 0">
+          <Comment 
+           class="message" 
+           :id-post="postId"
+           />
+        </div>
 
     </main>
 </template>

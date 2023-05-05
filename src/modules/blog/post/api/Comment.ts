@@ -1,11 +1,12 @@
-import type { Post as PostCreate, UpdatePost } from "@/interfaces";
+import type { CommentCreate, UpdateComment } from "../interface/Comment";
 
-class Post{
 
-    public baseUrl = 'http://localhost:3000/posts/';
+class Comment{
 
-    async getAll(){
-        const post = await fetch(this.baseUrl);
+    public baseUrl = 'http://localhost:3000/comments/';
+
+    async getAll(id: string): Promise<CommentCreate[]>{
+        const post = await fetch(this.baseUrl+'post/'+id);
         return await post.json();
     }
  
@@ -14,8 +15,8 @@ class Post{
         return await post.json();
     }
 
-    async create(data: PostCreate) {
-        const post = await fetch(this.baseUrl+'create/', {
+    async create(data: CommentCreate) {
+        const comment = await fetch(this.baseUrl+'create/', {
             method: 'POST',
             mode: "cors",
             cache: "no-cache",
@@ -25,10 +26,10 @@ class Post{
             },
             body: JSON.stringify(data)
         });
-        return await post.json();
+        return await comment.json();
     }
 
-    async update(data: UpdatePost, id: string) {
+    async update(data: UpdateComment, id: string) {
 
         const post = await fetch(this.baseUrl + 'update/' + id, {
             method: 'PUT',
@@ -54,4 +55,4 @@ class Post{
         return await post.json();
     }
 }
-export default new Post;
+export default new Comment();

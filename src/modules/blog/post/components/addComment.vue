@@ -1,9 +1,9 @@
 <script setup lang="ts">
-
 import { marked } from 'marked';
 import { computed, ref } from 'vue';
-let input = ref('* Você pode escrever em markdown.');
+import Comment from '../api/Comment';
 
+let input = ref('* Você pode escrever em markdown.');
 
 let compiledMarkdown = computed(() => {
   return marked(input.value);
@@ -12,19 +12,29 @@ let compiledMarkdown = computed(() => {
 function update(e){
    input.value = e.target.value;
 }
-      
 
+async function newComment(e){
+   let dataComment = {
+    content: input.value,
+    postId: 'sssuxNHnCRs',
+    profileId: 'FxB1AAb2jrw' 
+   }
+   await Comment.create(dataComment);
+}
 
 </script>
 <template>
   <div class="form-container">
-    <form>
+    <form @submit.prevent="newComment">
       <label>Deixe seu comentário</label>
       <div class="editor-comment">
       <textarea :value="input" @input="update"></textarea>
       <div v-html="compiledMarkdown"></div>
       </div>
-      <button>Submeter</button>
+      <button type="submit">
+        <li class="pi pi-check"></li>
+        <span>Submeter</span>
+      </button>
     </form>
   </div>
 </template>
@@ -41,7 +51,6 @@ label {
   font-weight: 700;
   font-family: 'Yeseva One', cursive;
 }
-
 .editor-comment textarea{
   width: 100%;
   max-width: 600px;
@@ -49,9 +58,11 @@ label {
   max-height: 200px;
   margin-top: 0.5em;
 }
-
 button {
   max-width: 150px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   border: unset;
   background-color: var(--bkg-button);
   color: #230c0f;

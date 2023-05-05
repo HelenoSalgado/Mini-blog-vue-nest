@@ -1,31 +1,56 @@
 <script setup lang="ts">
+import type { CommentCreate } from '../interface/Comment';
 import Button from '../../components/Button.vue';
+import Comment from '../api/Comment'
+import { reactive } from 'vue';
+import { marked } from 'marked';
 
-const { author } = defineProps(['author']);
+const { idPost } = defineProps(['idPost']);
 
+const c = [];
+const comnts = reactive(c);
+
+const comments: CommentCreate[] = await Comment.getAll(idPost);
+
+for (let i = 0; i < comments.length; i++) {
+
+  const comment = {
+    id: comments[i].id,
+    profile: comments[i].profile,
+    content: marked(comments[i].content),
+    likes: comments[i].likes,
+  }
+  comnts.push(comment);
+}
+
+console.log(comments.content)
 </script>
 
 <template>
-  <div class="commented">
+  <div v-for="c in comnts" :key="c.id" class="commented">
     <div class="comment-author-info">
-      <img v-if="author?.avatar != null" :src="author?.avatar" />
+      <img v-if="c?.profile?.avatar != null" :src="c?.profile?.avatar" />
       <span v-else class="pi pi-user" style="font-size: 1.5rem;"></span>
       <div>
-        <h5>{{ author?.name }}</h5>
+        <h5>{{ c?.profile?.name }}</h5>
       </div>
     </div>
     <div class="comment-content">
-       <p>I found this article helpful</p>
+       <p v-html="c?.content"></p>
     </div>
-   
     <div class="comment-buttons">
-      <button class="update">Atualizar</button>
-      <button class="delete">Deletar</button>
+      <button class="update">
+        <li class="pi pi-pencil"></li>
+        <span>Editar</span> 
+      </button>
+      <button class="delete">
+        <li class="pi pi-trash"></li>
+        <span>Deletar</span>
+      </button>
       <div class="likes">
         <span>{{ 1 }}</span>
         <i class="pi pi-heart"></i>
-      </div>
-      
+      </div>  
     </div>
   </div>
 </template>
@@ -39,11 +64,16 @@ const { author } = defineProps(['author']);
   border-radius: var(--radius-container);
 }
 .update, .delete{
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   margin-right: 1rem;
   border: none;
-  padding: .3rem .5rem;
+  padding: .4rem .5rem;
   border-radius: 3px;
   color: #000;
+  font-size: .8rem;
+  line-height: 0;
   transition: 200ms all;
   cursor: pointer;
 }

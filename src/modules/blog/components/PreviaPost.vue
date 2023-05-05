@@ -8,8 +8,7 @@ const posts = reactive(p);
 
 
 onMounted(async () => {
-    const post = new Post();
-    const postsAll = await post.getAll();
+    const postsAll = await Post.getAll();
 
     for (let i = 0; i < postsAll.length; i++) {
         const post = {

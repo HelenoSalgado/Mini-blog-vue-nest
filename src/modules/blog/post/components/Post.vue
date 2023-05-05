@@ -1,16 +1,16 @@
 <script setup lang="ts">
 
 const { 
-  author, title, updatedAt, content, views, likes 
+  author, title, updatedAt, content, views, likes, comments
 } = defineProps([
   'author', 
   'title', 
   'updatedAt', 
   'content', 
   'views', 
-  'likes'
+  'likes',
+  'comments'
 ]);
-console.log(author)
 </script>
 
 <template>
@@ -35,9 +35,15 @@ console.log(author)
                 <h1>{{ title }}</h1>
                 <span v-html="content"></span>
             </div>
-            <div class="likes-article">
-              <span>{{ likes }}</span>
-              <i class="pi pi-heart"></i>
+            <div class="interactions-article">
+              <div class="likes">
+                <i class="pi pi-heart"></i>
+                <span>{{ likes }}</span>
+              </div>
+              <div class="comments">
+                <i class="pi pi-comment"></i>
+                <span>{{ comments }}</span>
+              </div> 
             </div>
         </article>
     </div>
@@ -76,18 +82,23 @@ console.log(author)
     gap: 10px;
     font-size: small;
   }
-  .likes-article{
-    width: 50px;
-    background-color: #d6d6d6;
-    border-radius: 7px;
-    padding: 0 .3rem;
-    margin: .5rem 0;
-    line-height: 0;
-    cursor: pointer;
+  .interactions-article{
+    margin: 2rem 0;
+    display: flex;
   }
-  .likes-article i{
+  .interactions-article i{
     margin: .5rem;
     vertical-align: middle;
+  }
+  .likes, .comments{
+    width: 50px;
+    display: inline-flex;
+    align-items: center;
+    background-color: #d6d6d6;
+    border-radius: 7px;
+    margin-right: .5rem;
+    line-height: 0;
+    cursor: pointer;
   }
   img{
     max-width: 800px;
