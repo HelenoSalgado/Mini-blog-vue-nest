@@ -1,4 +1,4 @@
-export interface Post {
+export interface CreatePost {
   author?:{
     name: string;
   };
@@ -11,4 +11,4 @@ export interface Post {
   likes?: number | string;
 }
 
-export interface UpdatePost extends Omit<Post, 'author' | 'views' | 'likes'> {}
+export interface UpdatePost extends Omit<CreatePost, 'author' | 'views' | 'likes'> {}

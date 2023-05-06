@@ -12,10 +12,10 @@ const Comment = defineAsyncComponent(() =>
 
 const route = useRoute();
 const postId = ref(route.params.id)
-
 const p = await Post.get(postId.value);
 
 const post = reactive({
+  id: '',
   author: '',
   title: '',
   updatedAt: '',
@@ -25,6 +25,7 @@ const post = reactive({
   comments: '',
 });
 
+post.id = p.id;
 post.author = p.author;
 post.title = p.title;
 post.updatedAt = p.updatedAt.split('T')[0];
@@ -33,8 +34,6 @@ post.likes = p.likes;
 post.comments = p.comments;
 post.content = marked(p.content);
 
-let newComment = ref('Olá');
-
 </script>
  
 <template>
@@ -42,6 +41,7 @@ let newComment = ref('Olá');
     
         <Suspense>
         <PostCompnt
+          :id="post.id"
           :author="post.author"
           :title="post.title"
           :updatedAt="post.updatedAt"
@@ -61,7 +61,8 @@ let newComment = ref('Olá');
            /> -->
         </div>
         <addComment 
-         :newComment="newComment"
+          :postId="postId"
+          :profileId="'FxB1AAb2jrw'"
         />
         <div v-if="post.comments.length > 0">
           <Comment 
@@ -79,6 +80,7 @@ let newComment = ref('Olá');
   contain: content;
   margin: auto;
   background-color: var(--bkg-white-shaded);
+  color: var(--color-text-black-soft);
   padding: var(--padding-conteiner);
   border-radius: 7px;
 }

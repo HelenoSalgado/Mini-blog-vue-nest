@@ -2,14 +2,13 @@
 import type { CommentCreate } from '../interface/Comment';
 import Button from '../../components/Button.vue';
 import Comment from '../api/Comment'
-import { reactive } from 'vue';
+import { ref, reactive } from 'vue';
 import { marked } from 'marked';
 
+const isAutentication = ref(false);
+
 const { idPost } = defineProps(['idPost']);
-
-const c = [];
-const comnts = reactive(c);
-
+const comnts = reactive<CommentCreate[]>([]);
 const comments: CommentCreate[] = await Comment.getAll(idPost);
 
 for (let i = 0; i < comments.length; i++) {
@@ -23,7 +22,17 @@ for (let i = 0; i < comments.length; i++) {
   comnts.push(comment);
 }
 
-console.log(comments.content)
+async function deleteComment(id: string){
+  await Comment.delete(id);
+  let i = comnts.findIndex((c) => { return c.id == id});
+  comnts.splice(i, 1);
+}
+
+function editeComment(id: string){
+  console.log(id)
+}
+
+console.log()
 </script>
 
 <template>
@@ -39,14 +48,16 @@ console.log(comments.content)
        <p v-html="c?.content"></p>
     </div>
     <div class="comment-buttons">
-      <button class="update">
+      <div v-if="isAutentication">
+      <button @click="editeComment(c.id)" class="update">
         <li class="pi pi-pencil"></li>
         <span>Editar</span> 
       </button>
-      <button class="delete">
+      <button @click="deleteComment(c.id)" class="delete">
         <li class="pi pi-trash"></li>
         <span>Deletar</span>
       </button>
+      </div>
       <div class="likes">
         <span>{{ 1 }}</span>
         <i class="pi pi-heart"></i>
@@ -59,7 +70,7 @@ console.log(comments.content)
 .commented{
   max-width: 500px;
   margin-top: 3rem;
-  background-color: #e9e9e9;
+  background-color: #eeeeee;
   padding: .5rem;
   border-radius: var(--radius-container);
 }
@@ -91,6 +102,7 @@ console.log(comments.content)
   align-items: center;
   gap: 5px;
   line-height: 0;
+  cursor: pointer;
 }
 .update:hover, .delete:hover{
   filter: brightness(110%);

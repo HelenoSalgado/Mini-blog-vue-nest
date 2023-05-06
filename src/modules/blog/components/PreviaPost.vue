@@ -1,49 +1,68 @@
 <script setup lang="ts">
 import { marked } from 'marked';
-import { computed, onMounted, reactive } from 'vue';
+import { reactive } from 'vue';
 import Post from '../post/api/Post';
+import { likeAdd } from '../post/api/like';
+import { ref } from 'vue';
+import type { PreviaPost } from '../interfaces/PreviaPost'
 
-const p = [];
-const posts = reactive(p);
+const posts = reactive<PreviaPost[]>([]);
+let isLike = ref(true);
 
+const postsAll = await Post.getAll();
 
-onMounted(async () => {
-    const postsAll = await Post.getAll();
+for (let i = 0; i < postsAll.length; i++) {
+    const post = {
+        id: postsAll[i].id,
+        title: postsAll[i].title,
+        content: marked(postsAll[i].content),
+        comments: postsAll[i].comments.length,
+        likes: postsAll[i].likes,
+    }
+    posts.push(post);
+};
 
-    for (let i = 0; i < postsAll.length; i++) {
-        const post = {
-            id: postsAll[i].id,
-            title: postsAll[i].title,
-            content: marked(postsAll[i].content),
-            likes: postsAll[i].likes,
-        }
-        posts.push(post);
+async function like(id: string, likes: number){
+    if(isLike.value){
+        var l = await likeAdd(id, likes+1);
+        isLike.value = false;
+    }else{
+        var l = await likeAdd(id, likes-1);
+        isLike.value = true;
+    }
+    let index = posts.findIndex((c) => { return c.id == id});
+    posts[index].likes = l.likes; 
+}
 
-    };
-});
 </script>
 
 <template>
     <div class="previas-posts">
-        <h2 v-if="posts==null">Nenhum post ainda</h2>
+        <h2 v-if="posts == null">Nenhum post ainda</h2>
         <div v-for="p in posts" :key="p.id" class="previa-post">
             <div class="filter">
-            <h1>{{ p.title }}</h1>
-            <p v-html="p.content"></p>
+                <h1>{{ p.title }}</h1>
+                <p v-html="p.content"></p>
             </div>
             <div class="info-buttons">
-               <button>
-                  <a :href="'http://localhost:5173/posts/'+p.id">Mais
-                     <i class="pi pi-angle-double-right"></i>
-                  </a>
+                <button>
+                    <a :href="'http://localhost:5173/posts/' + p.id">Mais
+                        <i class="pi pi-angle-double-right"></i>
+                    </a>
                 </button>
-                <div class="like">
-                    <span>{{ p.likes }}</span>
-                    <i class="pi pi-heart"></i>
+                <div class="button-interations">
+                    <div
+                    @click="like(p.id, p.likes)"
+                    class="likes">
+                        <span>{{ p.likes }}</span>
+                        <i class="pi pi-heart" :class="{'like-active': !isLike}"></i>
+                    </div>
+                    <div class="comments">
+                        <span>{{ p.comments }}</span>
+                        <i class="pi pi-comment"></i>
+                    </div>
                 </div>
-                
             </div>
-
         </div>
     </div>
 </template>
@@ -84,7 +103,7 @@ onMounted(async () => {
 .info-buttons{
     position: absolute;
     top: 15rem;
-    width: 80%;
+    width: 90%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -105,7 +124,11 @@ onMounted(async () => {
    vertical-align: middle;
    left: .3rem;
 }
-.like i{
+.button-interations{
+    display: inline-flex;
+    gap: 10px;
+}
+.likes i, .comments i{
     vertical-align: middle;
     margin: .5rem;
     cursor: pointer;

@@ -9,9 +9,8 @@ import { VMarkdownEditor } from 'vue3-markdown';
 import 'vue3-markdown/dist/style.css';
 
 const route = useRoute();
-const post = new Post();
 
-const p = await post.get(route.params.id);
+const p = await Post.get(route.params.id);
 const id = ref(p.id);
 const title = ref(p.title);
 const content = ref(p.content);
@@ -30,7 +29,7 @@ async function updatePost(){
         published: true
     }
  
-    const updatePost = await post.update(data, id.value);
+    const updatePost = await Post.update(data, id.value);
     isUpdate.value = false;
     message.value = updatePost.message;
    
@@ -39,7 +38,7 @@ async function updatePost(){
 async function deletePost(){
     isDelete.value = true;
     message.value = '';
-    const deletePost = await post.delete(id.value);
+    const deletePost = await Post.delete(id.value);
     message.value = deletePost.message;
     isDelete.value = false;
 }

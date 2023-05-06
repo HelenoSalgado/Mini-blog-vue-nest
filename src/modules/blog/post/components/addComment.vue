@@ -4,6 +4,9 @@ import { computed, ref } from 'vue';
 import Comment from '../api/Comment';
 
 let input = ref('* Você pode escrever em markdown.');
+let message = ref('');
+let isSubmit = ref(false);
+const { postId, profileId } = defineProps(['postId', 'profileId'])
 
 let compiledMarkdown = computed(() => {
   return marked(input.value);
@@ -14,12 +17,15 @@ function update(e){
 }
 
 async function newComment(e){
+  isSubmit.value = true;
    let dataComment = {
     content: input.value,
-    postId: 'sssuxNHnCRs',
-    profileId: 'FxB1AAb2jrw' 
+    postId,
+    profileId,
    }
-   await Comment.create(dataComment);
+   const comnt = await Comment.create(dataComment);
+   isSubmit.value = false;
+   message.value = comnt.message;
 }
 
 </script>
@@ -31,8 +37,10 @@ async function newComment(e){
       <textarea :value="input" @input="update"></textarea>
       <div v-html="compiledMarkdown"></div>
       </div>
+      <div class="message">{{ message }}</div>
       <button type="submit">
-        <li class="pi pi-check"></li>
+        <li v-if="!isSubmit" class="pi pi-check"></li>
+        <li v-else class="pi pi-spin pi-spinner"></li>
         <span>Submeter</span>
       </button>
     </form>
@@ -73,7 +81,13 @@ button {
   transition: all 200ms;
   cursor: pointer;
 }
+button i{
+  line-height: 0;
+}
 button:hover{
   filter: brightness(110%);
+}
+.message{
+  color: var(--color-message-sucess);
 }
 </style>

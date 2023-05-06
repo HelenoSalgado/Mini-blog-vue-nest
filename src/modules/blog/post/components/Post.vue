@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { likeAdd } from '../api/like';
 
 const { 
-  author, title, updatedAt, content, views, likes, comments
+  id, author, title, updatedAt, content, views, likes, comments
 } = defineProps([
+  'id',
   'author', 
   'title', 
   'updatedAt', 
@@ -11,6 +14,20 @@ const {
   'likes',
   'comments'
 ]);
+
+let likeInput = ref(likes);
+let isLike = ref(true);
+
+async function like(){
+    if(isLike.value){
+        var l = await likeAdd(id, likeInput.value+1);
+        isLike.value = false;
+    }else{
+        var l = await likeAdd(id, likeInput.value-1);
+        isLike.value = true;
+    }
+    likeInput.value = l.likes; 
+}
 </script>
 
 <template>
@@ -36,9 +53,9 @@ const {
                 <span v-html="content"></span>
             </div>
             <div class="interactions-article">
-              <div class="likes">
-                <i class="pi pi-heart"></i>
-                <span>{{ likes }}</span>
+              <div @click="like" class="likes">
+                <i class="pi pi-heart" :class="{'like-active': !isLike}"></i>
+                <span>{{ likeInput }}</span>
               </div>
               <div class="comments">
                 <i class="pi pi-comment"></i>
@@ -91,10 +108,11 @@ const {
     vertical-align: middle;
   }
   .likes, .comments{
-    width: 50px;
+    min-width: 50px;
+    padding: 0 .3rem;
     display: inline-flex;
     align-items: center;
-    background-color: #d6d6d6;
+    background-color: #ebebeb;
     border-radius: 7px;
     margin-right: .5rem;
     line-height: 0;
