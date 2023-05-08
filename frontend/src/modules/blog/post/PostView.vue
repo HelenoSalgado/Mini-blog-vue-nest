@@ -1,4 +1,5 @@
 <script setup lang="ts"> 
+import HeaderComnt from '@/components/Header.vue';
 import PostCompnt from './components/Post.vue';
 import addComment from './components/addComment.vue';
 import { useRoute } from 'vue-router';
@@ -37,6 +38,7 @@ post.content = marked(p.content);
 </script>
  
 <template>
+    <HeaderComnt />
     <main class="main">
     
         <Suspense>

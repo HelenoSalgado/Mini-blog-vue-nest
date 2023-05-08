@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import HeaderComnt from '@/components/Header.vue';
 import StartedVue from './components/Started.vue';
 
 </script>
 
 <template>
+  <HeaderComnt/>
   <main class="apresentation">
     <img src="./img/home.jpg" alt="">
     <StartedVue/>

@@ -32,7 +32,6 @@ function editeComment(id: string){
   console.log(id)
 }
 
-console.log()
 </script>
 
 <template>

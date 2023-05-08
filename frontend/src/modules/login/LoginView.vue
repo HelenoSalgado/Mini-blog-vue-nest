@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import router from '@/router';
-import { ref } from 'vue'
+import HeaderComnt from '@/components/Header.vue';
+import { ref } from 'vue';
 
 const email = ref('');
 const password = ref('');
@@ -12,7 +13,7 @@ async function login(){
 </script>
 
 <template>
-    
+    <HeaderComnt/>
     <div class="login">
 
         <div class="login-prints">

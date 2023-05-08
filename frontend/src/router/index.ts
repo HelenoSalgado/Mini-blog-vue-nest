@@ -44,6 +44,11 @@ const router = createRouter({
       path: '/edite/:id',
       name: 'edite',
       component: () => import('@/modules/blog/post/EditePostView.vue'),
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('@/modules/dashboard/DashboardView.vue'),
     }
   ]
 })

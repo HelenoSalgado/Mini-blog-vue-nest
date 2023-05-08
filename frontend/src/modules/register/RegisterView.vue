@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
+import HeaderComnt from '@/components/Header.vue';
 import { ref } from 'vue';
 
 const name = ref('');
@@ -14,7 +15,7 @@ async function register(){
 </script>
 
 <template>
-    
+    <HeaderComnt />
     <div class="register">
 
         <div class="register-prints">

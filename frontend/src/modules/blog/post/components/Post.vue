@@ -36,7 +36,7 @@ async function like(){
             <div class="article-author">
                 <div class="author-info">
                   <img v-if="author?.avatar != null" :src="author?.avatar"/>
-                  <span v-else class="pi pi-user" style="font-size: 1.5rem;"></span>
+                  <span v-else class="pi pi-user" style="font-size: 1.5rem;" shape="circle"></span>
                     <div>
                         <h3>{{ author?.name }}</h3>
                         <span class="date-update">Atualizado em {{ updatedAt }}</span>

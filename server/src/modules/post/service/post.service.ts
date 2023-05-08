@@ -13,7 +13,7 @@ export class PostService {
   ) {}
 
   async create(post: Post){
-    this.cacheManager.del('getPostsAll')
+    this.cacheManager.del('getPostsAll');
     const generateId = new ShortUniqueId();
     post.id = generateId(11);
 
@@ -40,12 +40,13 @@ export class PostService {
   }
 
   async remove(id: string){
-    this.cacheManager.del('getPostsAll')
+    this.cacheManager.del('getPostsAll');
     return await this.repository.remove(id);
   }
 
   async insertLike(data: { id: string, likes: number }){
-    return await this.repository.insertLike(data)
+    this.cacheManager.del('getPostsAll');
+    return await this.repository.insertLike(data);
   }
   
 }
